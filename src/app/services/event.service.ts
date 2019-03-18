@@ -32,4 +32,11 @@ export class EventService {
     const url = `${BASE_URL}/tags/${event.id}`;
     return this.http.put(url, event);
   }
+
+  deleteEvent(event: Event): Observable<any>{
+    const url = `${BASE_URL}/tags/${event.id}`;
+    return this.http.delete(url);
+  }
+
+
 }
