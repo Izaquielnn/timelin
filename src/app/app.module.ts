@@ -8,7 +8,8 @@ import { AppComponent } from './app.component';
 import { LoginComponent } from './components/login/login.component';
 import { AuthService } from './services/auth.service';
 import { SignupComponent } from './components/signup/signup.component';
-
+import { AuthGuardService as AuthGuard, AuthGuardService} from './services/auth-guard.service';
+ 
 @NgModule({
   declarations: [
     AppComponent,
@@ -21,12 +22,12 @@ import { SignupComponent } from './components/signup/signup.component';
     FormsModule,
     RouterModule.forRoot([
       { path: 'login', component: LoginComponent },
-      { path: 'signup', component: SignupComponent },
+      { path: 'signup', component: SignupComponent, canActivate: [AuthGuard] },
       
       { path: '**', redirectTo: '/' }
     ])
   ],
-  providers: [AuthService],
+  providers: [AuthService, AuthGuardService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
