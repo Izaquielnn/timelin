@@ -31,4 +31,9 @@ export class TagService {
     const url = `${BASE_URL}/tags/${tag.id}`;
     return this.http.put(url, tag);
   }
+
+  deleteTag(tag: Tag): Observable<any>{
+    const url = `${BASE_URL}/tags/${tag.id}`;
+    return this.http.delete(url);
+  }
 }
