@@ -19,6 +19,9 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit() {
+    if(this.authService.getToken()){
+      this.router.navigateByUrl('/timelin');
+    }
   };
 
   onSubmit(): void {
@@ -28,7 +31,9 @@ export class LoginComponent implements OnInit {
         localStorage.setItem('token', token);
         this.router.navigateByUrl('/')
       },
-      error => this.errorMessage = error.error
+      error => {
+        this.errorMessage = error.error || 'Email ou senha inválidos';
+      }
     )
   }
 }

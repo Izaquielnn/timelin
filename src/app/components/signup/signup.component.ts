@@ -19,15 +19,28 @@ export class SignupComponent implements OnInit {
   }
 
   ngOnInit() {
+    if(this.authService.getToken()){
+      this.router.navigateByUrl('/timelin');
+    }
   };
 
   onSubmit(): void {
+    if(this.user.name.length < 3) {
+      this.errorMessage = 'Nome deve possuir entre 3 e 50 caracteres';
+      return
+    }
+
+    if(this.user.password.length < 3) {
+      this.errorMessage = 'Senha deve possuir entre 5 e 50 caracteres';
+      return
+    }
+    
     this.authService.signUp(this.user.name,this.user.email, this.user.password)
     .subscribe(
       () => {
         this.router.navigateByUrl('/')
       },
-      error => this.errorMessage = error.error
+      error => this.errorMessage = error.error || 'Verifique os campos e tente novamente'
     )
   }
 }
