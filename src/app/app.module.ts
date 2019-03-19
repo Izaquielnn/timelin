@@ -15,6 +15,7 @@ import { reducer as TagReducer}  from './store/reducers/tag.reducers';
 import { HomepageComponent } from './components/homepage/homepage.component';
 import { TokenInterceptor, ErrorInterceptor } from './services/token.interceptor';
 import { TimelineComponent } from './components/timeline/timeline.component';
+import { EventComponent } from './components/event/event.component';
  
 @NgModule({
   declarations: [
@@ -23,6 +24,7 @@ import { TimelineComponent } from './components/timeline/timeline.component';
     SignupComponent,
     HomepageComponent,
     TimelineComponent,
+    EventComponent,
   ],
   imports: [
     BrowserModule,
@@ -30,7 +32,7 @@ import { TimelineComponent } from './components/timeline/timeline.component';
     FormsModule,
     RouterModule.forRoot([
       { path: 'login', component: LoginComponent },
-      { path: 'signup', component: SignupComponent, canActivate: [AuthGuard] },
+      { path: 'signup', component: SignupComponent },
       { path: 'timelin', component: TimelineComponent, canActivate: [AuthGuard] },
       { path: '', component: HomepageComponent },
       { path: '**', redirectTo: '/' }

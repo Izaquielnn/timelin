@@ -2,6 +2,7 @@ import { Injectable, Injector } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/catch';
+import 'rxjs/add/observable/throw';
 import { Router } from '@angular/router';
 import { 
   HttpEvent,
@@ -22,12 +23,14 @@ export class TokenInterceptor implements HttpInterceptor {
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     this.authService = this.injector.get(AuthService);
     const token: string = this.authService.getToken();
-    request = request.clone({
-      setHeaders: {
-        'x-auth-token': token,
-        'Content-Type': 'application/json'
-      }
-    });
+    if(token){
+      request = request.clone({
+        setHeaders: {
+          'x-auth-token': token,
+          'Content-Type': 'application/json'
+        }
+      });
+    }
     return next.handle(request);
   }
 }
