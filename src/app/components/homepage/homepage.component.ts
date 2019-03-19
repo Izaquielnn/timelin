@@ -1,13 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { Store } from '@ngrx/store';
-import { AppState } from '../../store/app.state';
-import * as TagActions from '../../store/actions/tag.actions';
-import * as EventActions from '../../store/actions/event.actions';
-import { TagService } from '../../services/tag.service';
-import { EventService } from '../../services/event.service';
-import { Event } from '../../models/event.model';
-import { Tag } from '../../models/tag.model';
-import { Observable } from 'rxjs';
+import { Router } from '@angular/router';
+
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-homepage',
@@ -16,24 +10,13 @@ import { Observable } from 'rxjs';
 })
 export class HomepageComponent implements OnInit {
 
-  tags: Observable<Tag[]>;
-  constructor(private tagService: TagService,
-              private eventService: EventService,
-              private store: Store<AppState>) {
-    this.tags = store.select('tag');
-  }
+  constructor(private authService: AuthService,private router: Router){}
+  
 
   ngOnInit() {
-    this.tagService.getTags()
-    .subscribe(
-      tags => {
-        this.store.dispatch(new TagActions.GetTags(tags))
-        this.tags = this.store.select('tag');
-        console.log(tags);
-        console.log(this.tags);
-      },
-      error => console.log(error.error)
-    )
+    if(this.authService.getToken()){
+      this.router.navigateByUrl('/timelin');
+    }
   }
 
 }

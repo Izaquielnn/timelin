@@ -29,7 +29,7 @@ export class LoginComponent implements OnInit {
     .subscribe(
       token => {
         localStorage.setItem('token', token);
-        this.router.navigateByUrl('/')
+        this.router.navigateByUrl('/timelin')
       },
       error => {
         this.errorMessage = error.error || 'Email ou senha inválidos';

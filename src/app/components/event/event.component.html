@@ -1,0 +1,9 @@
+<div>
+
+  <ul>
+    <li *ngFor="let event of events | async">
+      <h1>{{event.name}}</h1>
+      <span>{{event.description}}</span>
+    </li>
+  </ul>
+</div>
