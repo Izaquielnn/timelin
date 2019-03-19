@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 
 import { Event } from '../models/event.model';
 import { Tag } from '../models/tag.model';
-import  BASE_URL  from '../config';
+import  config  from '../config';
 
 @Injectable({
   providedIn: 'root'
@@ -14,29 +14,27 @@ export class EventService {
   constructor(private http: HttpClient) {}
 
   getEvents(): Observable<any>{
-    const url = `${BASE_URL}/events`;
+    const url = `${config.BASE_URL}/events`;
     return this.http.get(url);
   }
 
   addEvent(name: string, description: string, tags: Tag[], color: string): Observable<any> {
-    const url = `${BASE_URL}/tags`;
+    const url = `${config.BASE_URL}/tags`;
     return this.http.post<Event>(url, {name, description, color, tags});
   }
 
   removeEvent(id: number): Observable<any>{
-    const url = `${BASE_URL}/events/${id}`;
+    const url = `${config.BASE_URL}/events/${id}`;
     return this.http.delete(url);
   }
 
   updateEvent(event: Event): Observable<any>{
-    const url = `${BASE_URL}/tags/${event.id}`;
+    const url = `${config.BASE_URL}/tags/${event.id}`;
     return this.http.put(url, event);
   }
 
   deleteEvent(event: Event): Observable<any>{
-    const url = `${BASE_URL}/tags/${event.id}`;
+    const url = `${config.BASE_URL}/tags/${event.id}`;
     return this.http.delete(url);
   }
-
-
 }
