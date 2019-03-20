@@ -18,6 +18,8 @@ export class EventComponent implements OnInit {
 
   events: Observable<Event[]>;
   event: Event = new Event();
+  errorMessage: string | null;
+  
   
   constructor(private eventService: EventService,
               private store: Store<AppState>) {
@@ -44,7 +46,10 @@ export class EventComponent implements OnInit {
         this.store.dispatch(new EventActions.AddEvent(newEvent));
         this.closeEventModal();
       },
-      error => console.log(error.error)
+      error => {
+        this.errorMessage = error.error
+        console.log(error.error)
+      }
     )
   }
 
