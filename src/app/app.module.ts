@@ -35,7 +35,6 @@ import { EventComponent } from './components/event/event.component';
       { path: 'signup', component: SignupComponent },
       { path: 'timelin', component: TimelineComponent, canActivate: [AuthGuard] },
       { path: '', component: HomepageComponent },
-      { path: '**', redirectTo: '/' }
     ]),
     StoreModule.forRoot({
       event: eventReducer,

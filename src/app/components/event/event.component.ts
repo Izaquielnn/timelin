@@ -17,6 +17,7 @@ import { Observable } from 'rxjs';
 export class EventComponent implements OnInit {
 
   events: Observable<Event[]>;
+  event: Event = new Event();
   
   constructor(private eventService: EventService,
               private store: Store<AppState>) {
@@ -26,4 +27,50 @@ export class EventComponent implements OnInit {
   ngOnInit() {
   }
 
+  openEventForm(){
+    const  modal = document.getElementById('modalEventForm');
+    modal.style.display = "block";
+  }
+  closeEventModal(){
+    this.event = new Event();
+    const  modal = document.getElementById('modalEventForm');
+    modal.style.display = "none";
+  }
+
+  createEvent(){
+    this.eventService.addEvent(this.event.name, this.event.description, this.event.date, this.event.tags, this.event.color)
+    .subscribe(
+      newEvent => {
+        this.store.dispatch(new EventActions.AddEvent(newEvent));
+        this.closeEventModal();
+      },
+      error => console.log(error.error)
+    )
+  }
+
+  delEvent(eventToDel){
+    let confirmation = confirm("Deseja realmente deletar o acontecimento?");
+    if(confirmation){
+      this.eventService.deleteEvent(eventToDel)
+      .toPromise().then(() => 
+        this.store.dispatch(new EventActions.RemoveEvent(eventToDel))
+      ).catch(error =>  console.log(error));
+    }
+  }
+
+  openModalupdateEvent(eventToUpdate){
+    this.event = eventToUpdate;
+    this.openEventForm();
+  }
+
+  updateEvent(){
+    this.eventService.updateEvent(this.event)
+    .subscribe(
+      eventUpdated => {
+        this.store.dispatch(new EventActions.UpdateEvent(eventUpdated))
+        this.closeEventModal()
+      },
+      error => console.log(error)
+    )
+  }
 }

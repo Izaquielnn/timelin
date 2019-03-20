@@ -5,6 +5,6 @@ export class Event {
     name?: string;
     description?: string;
     color?: string;
-    date?: string;
+    date?: Date;
     tags?: Tag[];
 }

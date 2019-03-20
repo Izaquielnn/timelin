@@ -9,6 +9,8 @@ import { Event } from '../../models/event.model';
 import { Tag } from '../../models/tag.model';
 import { Observable } from 'rxjs';
 import { Router } from '@angular/router';
+import { UserService } from '../../services/user.service';
+import { User } from 'src/app/models/user.model';
 
 @Component({
   selector: 'app-timeline',
@@ -19,10 +21,14 @@ export class TimelineComponent implements OnInit {
 
   tags: Observable<Tag[]>;
   events: Observable<Event[]>;
+  user: User = new User();
+  userToUpdate: User = new User();
+  errorMessage: string | null;
   
   constructor(private tagService: TagService,
               private eventService: EventService,
               private store: Store<AppState>,
+              private userService: UserService,
               private router: Router) {
   }
 
@@ -33,6 +39,14 @@ export class TimelineComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.userService.getUser()
+    .subscribe(
+      user => {
+        this.user = user;
+        this.userToUpdate = {...user};
+      },
+      error => console.log(error)
+    )
     this.tagService.getTags()
     .subscribe(
       tags => {
@@ -55,4 +69,28 @@ export class TimelineComponent implements OnInit {
 
   }
 
+  openUserForm(){
+    const  modal = document.getElementById('modalUserForm');
+    modal.style.display = "block";
+  }
+  closeUserModal(){
+    this.userToUpdate = {...this.user};
+    const  modal = document.getElementById('modalUserForm');
+    modal.style.display = "none";
+  }
+
+  onSubmit(): void {
+    this.userService.updateUser(this.userToUpdate)
+    .subscribe(
+      userUpdated => {
+        this.user = userUpdated
+        this.closeUserModal();
+      },
+      error => {
+        console.log(error)
+        this.errorMessage = error.error
+      }
+    )
+  }
+  
 }

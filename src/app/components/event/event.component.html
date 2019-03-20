@@ -1,9 +1,91 @@
-<div>
 
-  <ul>
-    <li *ngFor="let event of events | async">
-      <h1>{{event.name}}</h1>
-      <span>{{event.description}}</span>
-    </li>
-  </ul>
+<body>
+  <section id="cd-timeline" class="cd-container">
+    <div class="cd-timeline-block" *ngFor="let event of events | async">
+      <div class="cd-timeline-img" [ngStyle]="{'background-color':  event.color}">  
+      </div>
+
+      <div class="cd-timeline-content">
+        <h2>{{event.name}}</h2>
+        <p >{{event.description}}</p>
+        <div class="btn btn-danger mr-2" (click)="delEvent(event)">deletar</div>
+        <div class="btn btn-info" (click)="openModalupdateEvent(event)">atualizar</div>
+        <span class="cd-date">{{event.date | date:'dd/MM/yyyy'}}</span>
+      </div>
+    </div>  
+  </section>
+</body>
+
+<button (click)='openEventForm()'class="btn btn-primary rounded-circle btn-add-event">
+  <h1>+</h1>
+</button>
+
+<div id="modalEventForm" class="modalEventForm">
+  <div class="modalEventForm-content">
+    <div class="row d-flex justify-content-center">
+      <div class="col-md-4 ">
+        <h1>Novo Evento</h1>
+        <div *ngIf="errorMessage">
+          <div class="alert alert-danger" role="alert">
+            {{errorMessage}}
+          </div>
+        </div>
+        <form (ngSubmit)="createEvent()" ngNativeValidate>
+          <div class="form-group">
+            <label for="name">Nome</label>
+            <input
+              [(ngModel)]="event.name"
+              name="name"
+              required
+              class="form-control"
+              id="name"
+              placeholder="Digite o nome do evento">
+          </div>
+          <div class="form-group">
+            <label for="description">Descrição</label>
+            <input
+              [(ngModel)]="event.description"
+              name="description"
+              required
+              class="form-control"
+              id="description"
+              placeholder="Digite a descrição do evento">
+          </div>
+          <div class="form-group">
+              <label for="date">Data</label>
+              <input
+                [(ngModel)]="event.date"
+                name="date"
+                type="date"
+                required
+                class="form-control"
+                id="date"
+                >
+            </div>
+          <div class="form-group">
+            <label for="color">Cor</label>
+            <input
+              [(ngModel)]="event.color"
+              name="color"
+              type="color"
+              required
+              class="form-control"
+              id="description"
+              >
+          </div>
+          <div class="form-row">
+            <div class="col" *ngIf="event.id">
+              <div (click)="updateEvent()" class="btn btn-info btn-block my-4">Atualizar</div>
+            </div>
+            <div class="col" *ngIf="!event.id">
+                <button type="submit" class="btn btn-info btn-block my-4">Criar</button>
+              </div>
+            <div class="col">
+              <div (click)='closeEventModal()' class="btn btn-info btn-block my-4">Cancelar</div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
 </div>
